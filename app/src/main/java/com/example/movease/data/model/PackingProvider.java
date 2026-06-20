@@ -58,6 +58,4 @@ public class PackingProvider implements Serializable {
         this.deliveryAvailable = deliveryAvailable;
     }
 
-    // getters and setters
-    // ...
 }
