@@ -43,7 +43,7 @@ public class PlanListActivity extends AppCompatActivity {
         rvPlans.setLayoutManager(new LinearLayoutManager(this));
 
         repository = new MoveRepository();
-        repository.init(this);
+        repository.init();
 
         // Get data from intent
         plans = (List<Plan>) getIntent().getSerializableExtra("plans");

@@ -17,8 +17,8 @@ public class MoveRepository {
         db = FirebaseFirestore.getInstance();
     }
 
-    public void init(Context context) {
-        apiService = RetrofitClient.getClient(context).create(MoveApiService.class);
+    public void init() {
+        apiService = RetrofitClient.getClient().create(MoveApiService.class);
     }
 
     public interface DataCallback {

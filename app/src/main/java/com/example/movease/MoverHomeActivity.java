@@ -15,6 +15,7 @@ import com.example.movease.engine.Plan;
 import com.example.movease.engine.PlanGenerator;
 import com.google.firebase.auth.FirebaseAuth;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -35,29 +36,25 @@ public class MoverHomeActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         repository = new MoveRepository();
-        repository.init(this);
+        repository.init();   // no longer needs a Context
 
-        areaDropdown = findViewById(R.id.spinnerArea);   // ID matches the AutoCompleteTextView
+        areaDropdown = findViewById(R.id.spinnerArea);
         bedroomsDropdown = findViewById(R.id.spinnerBedrooms);
         etMaxBudget = findViewById(R.id.etMaxBudget);
         btnDate = findViewById(R.id.btnDate);
         btnFindPlan = findViewById(R.id.btnFindPlan);
         btnLogout = findViewById(R.id.btnLogout);
 
-        // Set up area dropdown
+        // Area dropdown
         ArrayAdapter<String> areaAdapter = new ArrayAdapter<>(
-                this,
-                R.layout.dropdown_item,                       // custom layout we created
-                getResources().getStringArray(R.array.lahore_areas)
-        );
+                this, R.layout.dropdown_item,
+                getResources().getStringArray(R.array.lahore_areas));
         areaDropdown.setAdapter(areaAdapter);
 
-        // Set up bedrooms dropdown
+        // Bedrooms dropdown
         ArrayAdapter<String> bedroomsAdapter = new ArrayAdapter<>(
-                this,
-                R.layout.dropdown_item,
-                getResources().getStringArray(R.array.bedrooms)
-        );
+                this, R.layout.dropdown_item,
+                getResources().getStringArray(R.array.bedrooms));
         bedroomsDropdown.setAdapter(bedroomsAdapter);
 
         // Date picker
@@ -77,7 +74,6 @@ public class MoverHomeActivity extends AppCompatActivity {
 
         // Find plan button
         btnFindPlan.setOnClickListener(v -> {
-            // Read selected area and bedrooms using getText()
             String area = areaDropdown.getText().toString();
             String bedroomsStr = bedroomsDropdown.getText().toString();
             String budgetStr = etMaxBudget.getText().toString().trim();
@@ -96,7 +92,7 @@ public class MoverHomeActivity extends AppCompatActivity {
             String moveDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
                     .format(selectedDate.getTime());
 
-            // Fetch data and generate plans
+            // Fetch data and generate plans (runs on background thread)
             repository.fetchAllData(area, maxBudget, bedrooms, new MoveRepository.DataCallback() {
                 @Override
                 public void onDataLoaded(List<House> houses, List<LaborProvider> labors,
@@ -104,23 +100,30 @@ public class MoverHomeActivity extends AppCompatActivity {
                     PlanGenerator generator = new PlanGenerator();
                     List<Plan> plans = generator.generatePlans(houses, labors, packings, transports, maxBudget);
 
-                    if (plans.isEmpty()) {
-                        Toast.makeText(MoverHomeActivity.this, "No plans found for your budget", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
+                    // FIX: wrap plans in a new ArrayList to guarantee serializability
+                    List<Plan> serializablePlans = new ArrayList<>(plans);
 
-                    Intent intent = new Intent(MoverHomeActivity.this, PlanListActivity.class);
-                    intent.putExtra("plans", (java.io.Serializable) plans);
-                    intent.putExtra("area", area);
-                    intent.putExtra("maxBudget", maxBudget);
-                    intent.putExtra("bedrooms", bedrooms);
-                    intent.putExtra("moveDate", moveDate);
-                    startActivity(intent);
+                    runOnUiThread(() -> {
+                        if (serializablePlans.isEmpty()) {
+                            Toast.makeText(MoverHomeActivity.this,
+                                    "No plans found for your budget", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        Intent intent = new Intent(MoverHomeActivity.this, PlanListActivity.class);
+                        intent.putExtra("plans", (java.io.Serializable) serializablePlans);
+                        intent.putExtra("area", area);
+                        intent.putExtra("maxBudget", maxBudget);
+                        intent.putExtra("bedrooms", bedrooms);
+                        intent.putExtra("moveDate", moveDate);
+                        startActivity(intent);
+                    });
                 }
 
                 @Override
                 public void onError(String error) {
-                    Toast.makeText(MoverHomeActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
+                    runOnUiThread(() ->
+                            Toast.makeText(MoverHomeActivity.this,
+                                    "Error: " + error, Toast.LENGTH_SHORT).show());
                 }
             });
         });
