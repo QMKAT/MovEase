@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".SignupActivity" />
-        <activity android:name=".MoverHomeActivity" />
-        <activity android:name=".ProviderHomeActivity" />    </application>
+        <activity android:name=".ProviderHomeActivity" />
         <activity android:name=".PlanListActivity" />
+    </application>
 </manifest>

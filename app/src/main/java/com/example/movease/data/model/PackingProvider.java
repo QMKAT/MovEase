@@ -57,5 +57,4 @@ public class PackingProvider implements Serializable {
     public void setDeliveryAvailable(boolean deliveryAvailable) {
         this.deliveryAvailable = deliveryAvailable;
     }
-
 }

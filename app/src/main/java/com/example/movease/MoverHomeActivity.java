@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.movease.data.model.*;
 import com.example.movease.data.repository.MoveRepository;
+import com.example.movease.engine.Plan;
 import com.example.movease.engine.PlanGenerator;
 import com.google.firebase.auth.FirebaseAuth;
 import java.text.SimpleDateFormat;

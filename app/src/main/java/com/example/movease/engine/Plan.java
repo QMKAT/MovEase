@@ -14,9 +14,9 @@ public class Plan implements Serializable {
     private List<String> advantages;
     private List<String> disadvantages;
 
-    // constructor, getters, setters
-    public Plan(House house, LaborProvider labor, PackingProvider packing, TransportProvider transport,
-                double totalCost, double score, List<String> advantages, List<String> disadvantages) {
+    public Plan(House house, LaborProvider labor, PackingProvider packing,
+                TransportProvider transport, double totalCost, double score,
+                List<String> advantages, List<String> disadvantages) {
         this.house = house;
         this.labor = labor;
         this.packing = packing;
@@ -27,7 +27,6 @@ public class Plan implements Serializable {
         this.disadvantages = disadvantages;
     }
 
-    // getters...
     public House getHouse() { return house; }
     public LaborProvider getLabor() { return labor; }
     public PackingProvider getPacking() { return packing; }
