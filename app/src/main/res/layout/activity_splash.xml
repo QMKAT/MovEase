@@ -4,99 +4,82 @@
     android:layout_height="match_parent"
     android:background="@drawable/splash_bg">
 
-    <!-- We'll define splash_bg as a gradient drawable later -->
-
+    <!-- Logo + title at the top -->
     <LinearLayout
+        android:id="@+id/llLogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
-        android:layout_centerInParent="true">
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp">
 
         <ImageView
-            android:id="@+id/ivLogo"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:src="@drawable/ic_truck"
             android:contentDescription="@string/app_name"
-            android:layout_marginBottom="16dp"/>
+            android:tint="@color/accent" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="MovEase"
-            android:textSize="36sp"
+            android:textSize="40sp"
             android:textStyle="bold"
             android:textColor="@android:color/white"
-            android:shadowColor="#33000000"
-            android:shadowRadius="8"
-            android:letterSpacing="0.1"
-            android:layout_marginBottom="8dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Buy &amp; Move Simplified"
-            android:textSize="16sp"
-            android:textColor="#E3F2FD"
-            android:layout_marginBottom="40dp"/>
-
-        <ProgressBar
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:indeterminateTint="@android:color/white"/>
+            android:letterSpacing="0.05"
+            android:layout_marginTop="8dp" />
     </LinearLayout>
 
-    <!-- Existing animation elements (houses, truck) can be placed here too;
-         we'll keep them in the same positions but make them white-tinted. -->
+    <!-- Houses and truck animation area (centred vertically) -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/llLogo"
+        android:layout_marginTop="40dp">
 
-    <TextView
-        android:id="@+id/tvAppTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="MovEase"
-        android:textSize="36sp"
-        android:textStyle="bold"
-        android:textColor="#1976D2"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp"/>
+        <!-- Left house -->
+        <ImageView
+            android:id="@+id/ivHouseLeft"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:src="@drawable/ic_house"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="40dp"
+            android:tint="@color/primary_dark" />
 
-    <!-- Left house -->
-    <ImageView
-        android:id="@+id/ivHouseLeft"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:src="@drawable/ic_house"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="40dp"/>
+        <!-- Right house -->
+        <ImageView
+            android:id="@+id/ivHouseRight"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:src="@drawable/ic_house"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="40dp"
+            android:tint="@color/primary_dark" />
 
-    <!-- Right house -->
-    <ImageView
-        android:id="@+id/ivHouseRight"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:src="@drawable/ic_house"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="40dp"/>
+        <!-- Truck (starts near left house, moves to right house) -->
+        <ImageView
+            android:id="@+id/ivTruck"
+            android:layout_width="72dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_truck"
+            android:layout_alignBottom="@id/ivHouseLeft"
+            android:layout_marginStart="80dp" />
+    </RelativeLayout>
 
-    <!-- Truck (starts near left house, will move to right house) -->
-    <ImageView
-        android:id="@+id/ivTruck"
-        android:layout_width="72dp"
-        android:layout_height="48dp"
-        android:src="@drawable/ic_truck"
-        android:layout_alignBottom="@id/ivHouseLeft"
-        android:layout_marginStart="80dp"/>
-
+    <!-- Tagline at the bottom -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Moving made simple"
+        android:text="Buy &amp; Move Simplified"
         android:textSize="16sp"
-        android:textColor="#888"
-        android:layout_below="@id/ivTruck"
+        android:textColor="@color/primary_dark"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="24dp"/>
+        android:layout_marginBottom="32dp" />
 </RelativeLayout>
