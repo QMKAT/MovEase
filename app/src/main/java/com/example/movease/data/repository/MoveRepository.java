@@ -30,17 +30,25 @@ public class MoveRepository {
     public void fetchAllData(String area, double maxBudget, int bedrooms, DataCallback callback) {
         new Thread(() -> {
             try {
-                // 1. Fetch houses from mock (or you can later change to Firestore)
-                List<House> houses = apiService.getHouses(area, maxBudget, bedrooms).execute().body();
-                if (houses == null) houses = new ArrayList<>();
+                // 1. Houses from mock (effectively final)
+                final List<House> houses = new ArrayList<>();
+                List<House> mockHouses = apiService.getHouses(area, maxBudget, bedrooms).execute().body();
+                if (mockHouses != null) houses.addAll(mockHouses);
 
-                // 2. Fetch mock services as fallback
-                List<LaborProvider> labors = apiService.getLabor("Lahore").execute().body();
-                List<PackingProvider> packings = apiService.getPacking("Lahore").execute().body();
-                List<TransportProvider> transports = apiService.getTransport("Lahore").execute().body();
-                if (labors == null) labors = new ArrayList<>();
-                if (packings == null) packings = new ArrayList<>();
-                if (transports == null) transports = new ArrayList<>();
+                // 2. Prepare effectively final lists for services
+                final List<LaborProvider> labors = new ArrayList<>();
+                final List<PackingProvider> packings = new ArrayList<>();
+                final List<TransportProvider> transports = new ArrayList<>();
+
+                // Add mock data to these lists
+                List<LaborProvider> mockLabors = apiService.getLabor("Lahore").execute().body();
+                if (mockLabors != null) labors.addAll(mockLabors);
+
+                List<PackingProvider> mockPackings = apiService.getPacking("Lahore").execute().body();
+                if (mockPackings != null) packings.addAll(mockPackings);
+
+                List<TransportProvider> mockTransports = apiService.getTransport("Lahore").execute().body();
+                if (mockTransports != null) transports.addAll(mockTransports);
 
                 // 3. Fetch all provider services from Firestore and merge
                 db.collection("services").get()
@@ -56,7 +64,7 @@ public class MoveRepository {
                                         lp.setName(service.getName());
                                         lp.setRatePerHour(service.getRate());
                                         lp.setRating(service.getRating());
-                                        lp.setMaxWorkers(5);          // sensible default
+                                        lp.setMaxWorkers(5);
                                         lp.setAvailabilityDate("2026-06-21");
                                         labors.add(lp);
                                         break;
@@ -82,7 +90,7 @@ public class MoveRepository {
                                         break;
                                 }
                             }
-                            // Now deliver the combined lists to the callback
+                            // Deliver the combined lists
                             callback.onDataLoaded(houses, labors, packings, transports);
                         })
                         .addOnFailureListener(e -> callback.onError(e.getMessage()));

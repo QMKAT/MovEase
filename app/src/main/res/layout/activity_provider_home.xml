@@ -3,19 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-<<<<<<< Updated upstream
-    android:orientation="vertical"
-    android:padding="16dp">
-
-    <TextView
-        android:id="@+id/tvWelcome"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Provider Dashboard"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="8dp"/>
-=======
     android:orientation="vertical">
 
     <com.google.android.material.appbar.MaterialToolbar
@@ -25,7 +12,6 @@
         android:background="@color/primary"
         app:title="My Services"
         app:titleTextColor="@android:color/white"/>
->>>>>>> Stashed changes
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvServices"
@@ -37,31 +23,11 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnAddService"
-<<<<<<< Updated upstream
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="+ Add New Service"
-        android:layout_marginBottom="16dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Your Services:"
-        android:textSize="18sp"
-        android:layout_marginBottom="8dp"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvServices"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
-=======
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_margin="16dp"
         android:text="+ Add New Service"
         app:cornerRadius="12dp"/>
->>>>>>> Stashed changes
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnLogout"
@@ -70,10 +36,6 @@
         android:layout_height="wrap_content"
         android:text="Logout"
         android:layout_gravity="center"
-<<<<<<< Updated upstream
-        android:layout_marginTop="16dp"/>
-=======
         android:layout_marginBottom="8dp"
         android:textColor="@color/accent"/>
->>>>>>> Stashed changes
 </LinearLayout>

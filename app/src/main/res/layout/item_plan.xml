@@ -14,7 +14,6 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- House -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -35,9 +34,12 @@
                 android:textColor="@color/text_primary"/>
         </LinearLayout>
 
-        <View style="@style/Divider" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/surface"
+            android:layout_marginVertical="8dp"/>
 
-        <!-- Labor -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -55,7 +57,6 @@
                 android:textSize="14sp"/>
         </LinearLayout>
 
-        <!-- Packing -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -73,7 +74,6 @@
                 android:textSize="14sp"/>
         </LinearLayout>
 
-        <!-- Transport -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -91,7 +91,11 @@
                 android:textSize="14sp"/>
         </LinearLayout>
 
-        <View style="@style/Divider" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/surface"
+            android:layout_marginVertical="8dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
