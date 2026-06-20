@@ -6,6 +6,16 @@
         <item>Model Town</item>
         <item>Johar Town</item>
         <item>Bahria Town</item>
+        <item>Bankers Avenue</item>
+        <item>Askari 11</item>
+        <item>Lake City</item>
+        <item>Park View City</item>
+        <item>Al Noor Town</item>
+        <item>Sheraz Villas</item>
+        <item>Al-Kabir Town</item>
+        <item>Paragon City</item>
+        <item>Marghzar Officers Colony</item>
+        <item>Al-Hafiz Town</item>
     </string-array>
     <string-array name="bedrooms">
         <item>1</item>

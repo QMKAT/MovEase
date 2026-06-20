@@ -7,22 +7,22 @@ public class House implements Serializable {
     private String id;
     private String address;
     private String area;
-    private double rent;
+    private double price;          // sale price in PKR (changed from rent)
     private int bedrooms;
-    private double rating;
-    private double lat;
-    private double lng;
+    private double rating;         // default if not available
+    private double lat;            // default 0
+    private double lng;            // default 0
     private List<String> disadvantages;
 
-    // Getters and setters (or use public fields for simplicity)
+    // getters and setters (keep existing, just rename getRent/setRent to getPrice/setPrice)
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
     public String getAddress() { return address; }
     public void setAddress(String address) { this.address = address; }
     public String getArea() { return area; }
     public void setArea(String area) { this.area = area; }
-    public double getRent() { return rent; }
-    public void setRent(double rent) { this.rent = rent; }
+    public double getPrice() { return price; }
+    public void setPrice(double price) { this.price = price; }
     public int getBedrooms() { return bedrooms; }
     public void setBedrooms(int bedrooms) { this.bedrooms = bedrooms; }
     public double getRating() { return rating; }

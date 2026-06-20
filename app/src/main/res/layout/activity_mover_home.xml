@@ -31,14 +31,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Max Monthly Rent (PKR)"
+            android:text="Max Budget (PKR)"
             android:textSize="16sp"
             android:layout_marginTop="16dp"/>
         <EditText
-            android:id="@+id/etMaxRent"
+            android:id="@+id/etMaxBudget"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="e.g. 50000"
+            android:hint="e.g. 10000000"
             android:inputType="number"
             android:layout_marginTop="8dp"/>
 

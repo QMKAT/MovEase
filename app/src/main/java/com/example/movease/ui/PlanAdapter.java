@@ -29,7 +29,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Plan plan = plans.get(position);
-        holder.tvHouse.setText("House: " + plan.getHouse().getAddress() + " (Rent: PKR " + plan.getHouse().getRent() + ")");
+        holder.tvHouse.setText("House: " + plan.getHouse().getAddress() + " (Price: PKR " + String.format("%.0f", plan.getHouse().getPrice()) + ")");
         holder.tvLabor.setText("Labor: " + plan.getLabor().getName() + " (Rate/hr: " + plan.getLabor().getRatePerHour() + ")");
         holder.tvPacking.setText("Packing: " + plan.getPacking().getName() + " (Cost/box: " + plan.getPacking().getCostPerBox() + ")");
         holder.tvTransport.setText("Transport: " + plan.getTransport().getName() + " (Cost/km: " + plan.getTransport().getCostPerKm() + ")");
