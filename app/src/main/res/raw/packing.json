@@ -1,0 +1,18 @@
+[
+  {
+    "id": "p1",
+    "name": "SafePack",
+    "materialType": "Cardboard",
+    "costPerBox": 150,
+    "rating": 4.3,
+    "deliveryAvailable": true
+  },
+  {
+    "id": "p2",
+    "name": "EcoWrap",
+    "materialType": "Biodegradable",
+    "costPerBox": 200,
+    "rating": 4.7,
+    "deliveryAvailable": false
+  }
+]
