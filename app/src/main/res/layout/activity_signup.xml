@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     android:orientation="vertical"
+    android:gravity="center_horizontal"
     android:padding="32dp">
+
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/ic_truck"
+        android:contentDescription="@string/app_name"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="16dp"
+        app:tint="@color/primary" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -12,74 +22,108 @@
         android:text="Create Account"
         android:textSize="28sp"
         android:textStyle="bold"
-        android:layout_marginBottom="30dp"/>
+        android:textColor="@color/text_primary"
+        android:layout_marginBottom="8dp"/>
 
-    <EditText
-        android:id="@+id/etEmail"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Email"
-        android:inputType="textEmailAddress"/>
+        app:startIconDrawable="@drawable/ic_email"
+        app:boxStrokeColor="@color/primary"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_marginBottom="16dp">
 
-    <EditText
-        android:id="@+id/etPassword"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Password"
-        android:inputType="textPassword"
-        android:layout_marginTop="16dp"/>
+        app:startIconDrawable="@drawable/ic_password"
+        app:endIconMode="password_toggle"
+        app:boxStrokeColor="@color/primary"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_marginBottom="16dp">
 
-    <EditText
-        android:id="@+id/etConfirmPassword"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Confirm Password"
-        android:inputType="textPassword"
-        android:layout_marginTop="16dp"/>
+        app:startIconDrawable="@drawable/ic_password"
+        app:endIconMode="password_toggle"
+        app:boxStrokeColor="@color/primary"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_marginBottom="16dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etConfirmPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="I am a:"
-        android:textSize="18sp"
-        android:layout_marginTop="24dp"/>
+        android:textSize="16sp"
+        android:textColor="@color/text_primary"
+        android:layout_marginBottom="8dp"/>
 
     <RadioGroup
         android:id="@+id/radioGroupRole"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="8dp"
-        android:gravity="center">
+        android:gravity="center"
+        android:layout_marginBottom="24dp">
 
-        <RadioButton
+        <com.google.android.material.radiobutton.MaterialRadioButton
             android:id="@+id/radioMover"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Mover"/>
-        <RadioButton
+            android:text="Mover"
+            android:textSize="14sp"/>
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
             android:id="@+id/radioProvider"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Service Provider"/>
+            android:text="Service Provider"
+            android:textSize="14sp"/>
     </RadioGroup>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSignup"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:text="Sign Up"
-        android:layout_marginTop="24dp"/>
+        app:cornerRadius="12dp"
+        android:layout_marginBottom="16dp"/>
 
     <TextView
         android:id="@+id/tvLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Already have an account? Login"
-        android:textColor="#2196F3"
-        android:layout_marginTop="16dp"
+        android:textColor="@color/primary"
+        android:textSize="14sp"
         android:clickable="true"
-        android:focusable="true"/>
+        android:focusable="true"
+        android:padding="8dp"/>
 </LinearLayout>

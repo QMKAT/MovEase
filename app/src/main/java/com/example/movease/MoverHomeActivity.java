@@ -3,11 +3,9 @@ package com.example.movease;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.movease.data.model.*;
@@ -22,7 +20,7 @@ import java.util.Locale;
 
 public class MoverHomeActivity extends AppCompatActivity {
 
-    private Spinner spinnerArea, spinnerBedrooms;
+    private AutoCompleteTextView areaDropdown, bedroomsDropdown;
     private EditText etMaxBudget;
     private Button btnDate, btnFindPlan, btnLogout;
     private Calendar selectedDate = Calendar.getInstance();
@@ -38,24 +36,28 @@ public class MoverHomeActivity extends AppCompatActivity {
         repository = new MoveRepository();
         repository.init(this);
 
-        spinnerArea = findViewById(R.id.spinnerArea);
-        spinnerBedrooms = findViewById(R.id.spinnerBedrooms);
-        etMaxBudget = findViewById(R.id.etMaxBudget);   // must match XML
+        areaDropdown = findViewById(R.id.spinnerArea);   // ID matches the AutoCompleteTextView
+        bedroomsDropdown = findViewById(R.id.spinnerBedrooms);
+        etMaxBudget = findViewById(R.id.etMaxBudget);
         btnDate = findViewById(R.id.btnDate);
         btnFindPlan = findViewById(R.id.btnFindPlan);
         btnLogout = findViewById(R.id.btnLogout);
 
-        // Populate area spinner
-        ArrayAdapter<CharSequence> areaAdapter = ArrayAdapter.createFromResource(
-                this, R.array.lahore_areas, android.R.layout.simple_spinner_item);
-        areaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerArea.setAdapter(areaAdapter);
+        // Set up area dropdown
+        ArrayAdapter<String> areaAdapter = new ArrayAdapter<>(
+                this,
+                R.layout.dropdown_item,                       // custom layout we created
+                getResources().getStringArray(R.array.lahore_areas)
+        );
+        areaDropdown.setAdapter(areaAdapter);
 
-        // Populate bedrooms spinner
-        ArrayAdapter<CharSequence> bedroomAdapter = ArrayAdapter.createFromResource(
-                this, R.array.bedrooms, android.R.layout.simple_spinner_item);
-        bedroomAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerBedrooms.setAdapter(bedroomAdapter);
+        // Set up bedrooms dropdown
+        ArrayAdapter<String> bedroomsAdapter = new ArrayAdapter<>(
+                this,
+                R.layout.dropdown_item,
+                getResources().getStringArray(R.array.bedrooms)
+        );
+        bedroomsDropdown.setAdapter(bedroomsAdapter);
 
         // Date picker
         btnDate.setOnClickListener(v -> {
@@ -74,14 +76,21 @@ public class MoverHomeActivity extends AppCompatActivity {
 
         // Find plan button
         btnFindPlan.setOnClickListener(v -> {
-            String area = spinnerArea.getSelectedItem().toString();
+            // Read selected area and bedrooms using getText()
+            String area = areaDropdown.getText().toString();
+            String bedroomsStr = bedroomsDropdown.getText().toString();
             String budgetStr = etMaxBudget.getText().toString().trim();
-            int bedrooms = Integer.parseInt(spinnerBedrooms.getSelectedItem().toString());
 
             if (budgetStr.isEmpty()) {
                 Toast.makeText(this, "Enter your maximum budget", Toast.LENGTH_SHORT).show();
                 return;
             }
+            if (area.isEmpty() || bedroomsStr.isEmpty()) {
+                Toast.makeText(this, "Please select area and bedrooms", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            int bedrooms = Integer.parseInt(bedroomsStr);
             double maxBudget = Double.parseDouble(budgetStr);
             String moveDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
                     .format(selectedDate.getTime());
@@ -99,7 +108,6 @@ public class MoverHomeActivity extends AppCompatActivity {
                         return;
                     }
 
-                    // Pass plans AND search criteria for real‑time refresh
                     Intent intent = new Intent(MoverHomeActivity.this, PlanListActivity.class);
                     intent.putExtra("plans", (java.io.Serializable) plans);
                     intent.putExtra("area", area);

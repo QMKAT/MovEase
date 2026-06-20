@@ -2,7 +2,53 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:background="@drawable/splash_bg">
+
+    <!-- We'll define splash_bg as a gradient drawable later -->
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_centerInParent="true">
+
+        <ImageView
+            android:id="@+id/ivLogo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_truck"
+            android:contentDescription="@string/app_name"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MovEase"
+            android:textSize="36sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:shadowColor="#33000000"
+            android:shadowRadius="8"
+            android:letterSpacing="0.1"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Buy &amp; Move Simplified"
+            android:textSize="16sp"
+            android:textColor="#E3F2FD"
+            android:layout_marginBottom="40dp"/>
+
+        <ProgressBar
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:indeterminateTint="@android:color/white"/>
+    </LinearLayout>
+
+    <!-- Existing animation elements (houses, truck) can be placed here too;
+         we'll keep them in the same positions but make them white-tinted. -->
 
     <TextView
         android:id="@+id/tvAppTitle"

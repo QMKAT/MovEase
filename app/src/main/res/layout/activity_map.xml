@@ -4,21 +4,18 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!-- Simple title bar (optional) -->
-    <TextView
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="?attr/actionBarSize"
         android:background="@color/primary"
-        android:gravity="center_vertical"
-        android:paddingStart="16dp"
-        android:text="House Location"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        android:title="House Location"
+        android:titleTextColor="@android:color/white"
+        android:navigationIcon="@drawable/ic_back"/>
 
     <WebView
         android:id="@+id/webViewMap"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"/>
 </LinearLayout>

@@ -1,5 +1,7 @@
 package com.example.movease.data;
 
+import java.util.List;
+
 public class DataParser {
     public static double parsePrice(String priceStr) {
         if (priceStr == null) return 0;
