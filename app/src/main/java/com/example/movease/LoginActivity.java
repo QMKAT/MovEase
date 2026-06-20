@@ -15,6 +15,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -88,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        // Otherwise fetch from Firestore
+        // Fetch from Firestore
         db.collection("users").document(uid).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -98,9 +100,30 @@ public class LoginActivity extends AppCompatActivity {
                             session.saveUserRole(role);
                             routeUser(role);
                         } else {
-                            // Role not found – force re‑login or error
-                            Toast.makeText(LoginActivity.this, "User profile missing. Please sign up again.", Toast.LENGTH_LONG).show();
-                            mAuth.signOut();
+                            // Profile missing – create a default one
+                            createDefaultProfile(uid);
+                        }
+                    }
+                });
+    }
+
+    private void createDefaultProfile(String uid) {
+        Map<String, Object> userData = new HashMap<>();
+        userData.put("email", mAuth.getCurrentUser().getEmail());
+        userData.put("role", "mover");   // default role
+        db.collection("users").document(uid)
+                .set(userData)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            session.saveUserRole("mover");
+                            Toast.makeText(LoginActivity.this,
+                                    "Profile created. Welcome!", Toast.LENGTH_SHORT).show();
+                            routeUser("mover");
+                        } else {
+                            Toast.makeText(LoginActivity.this,
+                                    "Failed to create profile. Check internet.", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -116,6 +139,7 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
     private String getFirebaseErrorMessage(Exception exception) {
         if (exception == null) return "Login failed.";
         String msg = exception.getMessage();
