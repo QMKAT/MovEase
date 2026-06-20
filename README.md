@@ -1,6 +1,3 @@
-Here’s a polished **README.md** for your MovEase GitHub repository. Copy everything below into a file named `README.md` at the root of your project.
-
-```markdown
 # 🚚 MovEase – Buy & Move Simplified
 
 **MovEase** is a two‑sided marketplace Android app that helps users in Lahore buy a new house and move in seamlessly.  
@@ -107,7 +104,8 @@ Real provider services are fetched from Firestore and merged automatically.
 
 ## 👥 Contributors
 
-- Your Name – [GitHub Profile](https://github.com/your-username)
+- Muhammad Abdullah Tariq – [GitHub Profile](https://github.com/QMAT)
+- Hannan Shoaib – [GitHub Profile](https://github.com/Hannan-95)
 
 ---
 
@@ -119,15 +117,3 @@ Data from Zameen.com is used for demonstration only.
 ---
 
 **⭐ If you like this project, give it a star!**
-```
-
----
-
-### Instructions
-
-1. Replace `your-username` with your actual GitHub username.
-2. Add a `screenshots/` folder with actual screenshots of your app (take them on emulator/device).
-3. Optionally add a `docs/` folder for your project report PDF.
-4. Commit and push to GitHub.
-
-Your repository will look professional and complete. Good luck with the submission!
