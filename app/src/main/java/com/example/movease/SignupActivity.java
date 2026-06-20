@@ -93,7 +93,8 @@ public class SignupActivity extends AppCompatActivity {
                                                 }
                                             });
                                 } else {
-                                    Toast.makeText(SignupActivity.this, "Signup failed: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                    String errorMsg = getFirebaseErrorMessage(task.getException());
+                                    Toast.makeText(SignupActivity.this, errorMsg, Toast.LENGTH_LONG).show();
                                 }
                             }
                         });
@@ -115,5 +116,17 @@ public class SignupActivity extends AppCompatActivity {
             startActivity(new Intent(SignupActivity.this, ProviderHomeActivity.class));
         }
         finish();
+    }
+
+    private String getFirebaseErrorMessage(Exception exception) {
+        if (exception == null) return "Login failed.";
+        String msg = exception.getMessage();
+        if (msg == null) return "Unknown error.";
+        if (msg.contains("There is no user record")) return "No account found with this email.";
+        if (msg.contains("The password is invalid")) return "Wrong password.";
+        if (msg.contains("The email address is badly formatted")) return "Invalid email format.";
+        if (msg.contains("A network error")) return "No internet connection. Check your network.";
+        if (msg.contains("Too many requests")) return "Too many attempts. Try again later.";
+        return "Login error: " + msg;
     }
 }

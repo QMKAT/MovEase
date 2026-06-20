@@ -1,0 +1,39 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="64dp"
+    android:height="48dp"
+    android:viewportWidth="64"
+    android:viewportHeight="48">
+
+    <!-- Cargo box (open truck bed) -->
+    <path
+        android:fillColor="#1565C0"
+        android:pathData="M22,14h30v16H22z"/>
+
+    <!-- Package inside cargo box (yellow box) -->
+    <path
+        android:fillColor="#FFC107"
+        android:pathData="M28,20h10v8H28z"/>
+    <!-- Package cross string -->
+    <path
+        android:strokeColor="#FFA000"
+        android:strokeWidth="1"
+        android:pathData="M28,20l10,8M38,20l-10,8"/>
+
+    <!-- Truck cab -->
+    <path
+        android:fillColor="#0D47A1"
+        android:pathData="M8,22h14v8H8z"/>
+
+    <!-- Cab window -->
+    <path
+        android:fillColor="#B3E5FC"
+        android:pathData="M12,24h8v4H12z"/>
+
+    <!-- Wheels -->
+    <path
+        android:fillColor="#333"
+        android:pathData="M14,30m-3,0a3,3 0,1 1,6 0a3,3 0,1 1,-6 0"/>
+    <path
+        android:fillColor="#333"
+        android:pathData="M42,30m-3,0a3,3 0,1 1,6 0a3,3 0,1 1,-6 0"/>
+</vector>
