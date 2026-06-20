@@ -1,3 +1,6 @@
+Here’s a polished **README.md** for your MovEase GitHub repository. Copy everything below into a file named `README.md` at the root of your project.
+
+```markdown
 # 🚚 MovEase – Buy & Move Simplified
 
 **MovEase** is a two‑sided marketplace Android app that helps users in Lahore buy a new house and move in seamlessly.  
@@ -42,3 +45,89 @@ It combines real estate listings, labour services, packing materials, and transp
 - **Build:** Gradle (Groovy DSL), minSdk 24
 
 ### Project Structure
+```
+com.example.movease
+├── data
+│   ├── api          (Retrofit service, MockInterceptor, RetrofitClient)
+│   ├── model        (House, LaborProvider, PackingProvider, TransportProvider, Service)
+│   └── repository   (MoveRepository, ServiceRepository)
+├── engine           (Plan, PlanGenerator)
+├── ui               (PlanAdapter, ServiceAdapter)
+├── SplashActivity
+├── LoginActivity
+├── SignupActivity
+├── MoverHomeActivity
+├── ProviderHomeActivity
+├── PlanListActivity
+├── MapActivity
+├── MyFirebaseMessagingService
+└── UserSessionManager
+```
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Android Studio (latest stable)
+- Android SDK with API 24+ (Nougat)
+- Firebase project with Email/Password auth and Firestore enabled
+- `google-services.json` placed in `app/`
+
+### Setup
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/MovEase.git
+   ```
+2. Open the project in Android Studio.
+3. Sync Gradle files.
+4. Add your own `google-services.json` (from Firebase Console).
+5. Run on emulator/device (minSdk 24).
+
+### Mock Data
+The app uses local JSON files (`res/raw/*.json`) to simulate APIs.  
+Real provider services are fetched from Firestore and merged automatically.
+
+---
+
+## 🧪 Testing
+
+- **Unit tests:** PlanGenerator logic can be tested with JUnit (sample data provided in the engine).
+- **Integration:** Firebase Auth and Firestore require a real device or emulator with Google Play Services.
+- **Push notifications:** Send a test message from the Firebase Console → Cloud Messaging.
+
+---
+
+## 📄 Project Report & Demo
+
+- Full project report: [Project_Report.pdf](docs/Project_Report.pdf) (add your own)
+- Demo video: [Watch on YouTube](#) (add link)
+
+---
+
+## 👥 Contributors
+
+- Your Name – [GitHub Profile](https://github.com/your-username)
+
+---
+
+## 📜 License
+
+This project is for educational purposes as part of a semester project.  
+Data from Zameen.com is used for demonstration only.
+
+---
+
+**⭐ If you like this project, give it a star!**
+```
+
+---
+
+### Instructions
+
+1. Replace `your-username` with your actual GitHub username.
+2. Add a `screenshots/` folder with actual screenshots of your app (take them on emulator/device).
+3. Optionally add a `docs/` folder for your project report PDF.
+4. Commit and push to GitHub.
+
+Your repository will look professional and complete. Good luck with the submission!
