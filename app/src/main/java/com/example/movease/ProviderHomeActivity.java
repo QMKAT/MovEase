@@ -44,7 +44,6 @@ public class ProviderHomeActivity extends AppCompatActivity {
             public void onEditClick(Service service) {
                 showAddEditDialog(service);
             }
-
             @Override
             public void onDeleteClick(Service service) {
                 deleteService(service);
@@ -55,12 +54,8 @@ public class ProviderHomeActivity extends AppCompatActivity {
         findViewById(R.id.btnAddService).setOnClickListener(v -> showAddEditDialog(null));
         findViewById(R.id.btnLogout).setOnClickListener(v -> logout());
 
-        TextView tvWelcome = findViewById(R.id.tvWelcome);
-        tvWelcome.setText("Welcome, " + mAuth.getCurrentUser().getEmail());
-
         loadServices();
     }
-
     private void loadServices() {
         serviceRepository.getMyServices(
                 services -> {
