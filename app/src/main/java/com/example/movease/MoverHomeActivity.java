@@ -23,7 +23,7 @@ import java.util.Locale;
 public class MoverHomeActivity extends AppCompatActivity {
 
     private Spinner spinnerArea, spinnerBedrooms;
-    private EditText etMaxRent;
+    private EditText etMaxBudget;
     private Button btnDate, btnFindPlan, btnLogout;
     private Calendar selectedDate = Calendar.getInstance();
     private FirebaseAuth mAuth;
@@ -40,12 +40,12 @@ public class MoverHomeActivity extends AppCompatActivity {
 
         spinnerArea = findViewById(R.id.spinnerArea);
         spinnerBedrooms = findViewById(R.id.spinnerBedrooms);
-        etMaxRent = findViewById(R.id.etMaxRent);
+        etMaxBudget = findViewById(R.id.etMaxBudget);   // must match XML
         btnDate = findViewById(R.id.btnDate);
         btnFindPlan = findViewById(R.id.btnFindPlan);
         btnLogout = findViewById(R.id.btnLogout);
 
-        // Populate area spinner (Lahore areas)
+        // Populate area spinner
         ArrayAdapter<CharSequence> areaAdapter = ArrayAdapter.createFromResource(
                 this, R.array.lahore_areas, android.R.layout.simple_spinner_item);
         areaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -58,53 +58,54 @@ public class MoverHomeActivity extends AppCompatActivity {
         spinnerBedrooms.setAdapter(bedroomAdapter);
 
         // Date picker
-        btnDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DatePickerDialog datePicker = new DatePickerDialog(
-                        MoverHomeActivity.this,
-                        (view, year, month, dayOfMonth) -> {
-                            selectedDate.set(year, month, dayOfMonth);
-                            btnDate.setText(new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                                    .format(selectedDate.getTime()));
-                        },
-                        selectedDate.get(Calendar.YEAR),
-                        selectedDate.get(Calendar.MONTH),
-                        selectedDate.get(Calendar.DAY_OF_MONTH));
-                datePicker.show();
-            }
+        btnDate.setOnClickListener(v -> {
+            DatePickerDialog datePicker = new DatePickerDialog(
+                    MoverHomeActivity.this,
+                    (view, year, month, dayOfMonth) -> {
+                        selectedDate.set(year, month, dayOfMonth);
+                        btnDate.setText(new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                                .format(selectedDate.getTime()));
+                    },
+                    selectedDate.get(Calendar.YEAR),
+                    selectedDate.get(Calendar.MONTH),
+                    selectedDate.get(Calendar.DAY_OF_MONTH));
+            datePicker.show();
         });
 
         // Find plan button
         btnFindPlan.setOnClickListener(v -> {
             String area = spinnerArea.getSelectedItem().toString();
-            String rentStr = etMaxRent.getText().toString().trim();
+            String budgetStr = etMaxBudget.getText().toString().trim();
             int bedrooms = Integer.parseInt(spinnerBedrooms.getSelectedItem().toString());
 
-            if (rentStr.isEmpty()) {
-                Toast.makeText(this, "Enter maximum rent", Toast.LENGTH_SHORT).show();
+            if (budgetStr.isEmpty()) {
+                Toast.makeText(this, "Enter your maximum budget", Toast.LENGTH_SHORT).show();
                 return;
             }
-            double maxRent = Double.parseDouble(rentStr);
+            double maxBudget = Double.parseDouble(budgetStr);
             String moveDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
                     .format(selectedDate.getTime());
 
-            // Fetch data asynchronously and generate plans
-            repository.fetchAllData(area, maxRent, bedrooms, new MoveRepository.DataCallback() {
+            // Fetch data and generate plans
+            repository.fetchAllData(area, maxBudget, bedrooms, new MoveRepository.DataCallback() {
                 @Override
                 public void onDataLoaded(List<House> houses, List<LaborProvider> labors,
                                          List<PackingProvider> packings, List<TransportProvider> transports) {
                     PlanGenerator generator = new PlanGenerator();
-                    List<Plan> plans = generator.generatePlans(houses, labors, packings, transports, maxRent);
+                    List<Plan> plans = generator.generatePlans(houses, labors, packings, transports, maxBudget);
 
                     if (plans.isEmpty()) {
-                        Toast.makeText(MoverHomeActivity.this, "No plans found for your criteria", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MoverHomeActivity.this, "No plans found for your budget", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
-                    // Pass to PlanListActivity
+                    // Pass plans AND search criteria for real‑time refresh
                     Intent intent = new Intent(MoverHomeActivity.this, PlanListActivity.class);
                     intent.putExtra("plans", (java.io.Serializable) plans);
+                    intent.putExtra("area", area);
+                    intent.putExtra("maxBudget", maxBudget);
+                    intent.putExtra("bedrooms", bedrooms);
+                    intent.putExtra("moveDate", moveDate);
                     startActivity(intent);
                 }
 

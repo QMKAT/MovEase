@@ -11,13 +11,13 @@ public class PlanGenerator {
 
         // Generate Cartesian product
         for (House h : houses) {
-            if (h.getRent() > maxBudget) continue;
+            if (h.getPrice() > maxBudget) continue;
             for (LaborProvider l : labors) {
                 for (PackingProvider p : packings) {
                     for (TransportProvider t : transports) {
                         double estLaborCost = l.getRatePerHour() * 8; // assume 8 hours
                         double estTransportCost = t.getCostPerKm() * 10; // assume 10 km
-                        double totalCost = h.getRent() + estLaborCost + p.getCostPerBox() * 20 + estTransportCost;
+                        double totalCost = h.getPrice() + estLaborCost + p.getCostPerBox() * 20 + estTransportCost;
                         if (totalCost > maxBudget) continue;
 
                         double score = calculateScore(h, l, p, t, totalCost, maxBudget);
