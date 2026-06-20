@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary">#1976D2</color>          <!-- Blue 700 -->
-    <color name="primary_dark">#0D47A1</color>     <!-- Blue 900 -->
-    <color name="accent">#FF6E40</color>           <!-- Orange (deep orange 400) -->
-    <color name="background">#FAFAFA</color>       <!-- near white -->
+    <!-- Greenish-Yellow Theme -->
+    <color name="primary">#43A047</color>         <!-- Green 600 -->
+    <color name="primary_dark">#2E7D32</color>    <!-- Green 800 -->
+    <color name="accent">#FBC02D</color>          <!-- Yellow 700 -->
+    <color name="background">#F1F8E9</color>       <!-- Light Green 50 -->
     <color name="surface">#FFFFFF</color>
-    <color name="text_primary">#212121</color>
-    <color name="text_secondary">#757575</color>
-    <color name="status_bar">#0D47A1</color>
+    <color name="text_primary">#1B5E20</color>     <!-- Dark green for text -->
+    <color name="text_secondary">#558B2F</color>   <!-- Lighter green -->
+    <color name="status_bar">#1B5E20</color>       <!-- Dark green for status bar -->
 </resources>
