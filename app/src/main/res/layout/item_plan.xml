@@ -73,5 +73,11 @@
             android:text="Show Details"
             android:textSize="12sp"
             style="?android:attr/borderlessButtonStyle"/>
+        <Button
+            android:id="@+id/btnMap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Map"
+            style="?android:attr/borderlessButtonStyle"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -1,5 +1,6 @@
 package com.example.movease.ui;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import com.example.movease.MapActivity;
 import com.example.movease.R;
 import com.example.movease.engine.Plan;
 import java.util.List;
@@ -67,6 +69,20 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
                 holder.btnToggleDetails.setText("Show Details");
             }
         });
+
+        // Map button – opens MapActivity (free, no API key)
+        holder.btnMap.setOnClickListener(v -> {
+            Plan currentPlan = plans.get(holder.getAdapterPosition());
+            double lat = currentPlan.getHouse().getLat();
+            double lng = currentPlan.getHouse().getLng();
+            String address = currentPlan.getHouse().getAddress();
+
+            Intent intent = new Intent(v.getContext(), MapActivity.class);
+            intent.putExtra("lat", lat);
+            intent.putExtra("lng", lng);
+            intent.putExtra("address", address);
+            v.getContext().startActivity(intent);
+        });
     }
 
     @Override
@@ -75,6 +91,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        Button btnMap;
         TextView tvHouse, tvLabor, tvPacking, tvTransport, tvTotalCost, tvScore;
         LinearLayout llAdvantages, llDisadvantages;
         Button btnToggleDetails;
@@ -90,6 +107,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
             llAdvantages = itemView.findViewById(R.id.llAdvantages);
             llDisadvantages = itemView.findViewById(R.id.llDisadvantages);
             btnToggleDetails = itemView.findViewById(R.id.btnToggleDetails);
+            btnMap = itemView.findViewById(R.id.btnMap);
         }
     }
 }
