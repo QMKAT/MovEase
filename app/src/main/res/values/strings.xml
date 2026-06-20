@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">MovEase</string>
+    <string-array name="lahore_areas">
+        <item>DHA</item>
+        <item>Gulberg</item>
+        <item>Model Town</item>
+        <item>Johar Town</item>
+        <item>Bahria Town</item>
+    </string-array>
+    <string-array name="bedrooms">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
 </resources>

@@ -1,0 +1,24 @@
+[
+  {
+    "id": "h1",
+    "address": "12-A, DHA Phase 5, Lahore",
+    "area": "DHA",
+    "rent": 45000,
+    "bedrooms": 2,
+    "rating": 4.2,
+    "lat": 31.4697,
+    "lng": 74.2728,
+    "disadvantages": ["No parking", "Near market noise"]
+  },
+  {
+    "id": "h2",
+    "address": "34-B, Gulberg III, Lahore",
+    "area": "Gulberg",
+    "rent": 60000,
+    "bedrooms": 3,
+    "rating": 4.5,
+    "lat": 31.5139,
+    "lng": 74.3419,
+    "disadvantages": []
+  }
+]
