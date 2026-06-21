@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,8 +24,9 @@ import java.util.Locale;
 public class MoverHomeActivity extends AppCompatActivity {
 
     private AutoCompleteTextView areaDropdown, bedroomsDropdown;
-    private EditText etMaxBudget;
+    private EditText etMaxBudget, etFromAddress;
     private Button btnDate, btnFindPlan, btnLogout;
+    private CheckBox cbLabor, cbPacking, cbTransport;
     private Calendar selectedDate = Calendar.getInstance();
     private FirebaseAuth mAuth;
     private MoveRepository repository;
@@ -36,14 +38,18 @@ public class MoverHomeActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         repository = new MoveRepository();
-        repository.init();   // no longer needs a Context
+        repository.init();
 
         areaDropdown = findViewById(R.id.spinnerArea);
         bedroomsDropdown = findViewById(R.id.spinnerBedrooms);
         etMaxBudget = findViewById(R.id.etMaxBudget);
+        etFromAddress = findViewById(R.id.etFromAddress);
         btnDate = findViewById(R.id.btnDate);
         btnFindPlan = findViewById(R.id.btnFindPlan);
         btnLogout = findViewById(R.id.btnLogout);
+        cbLabor = findViewById(R.id.cbLabor);
+        cbPacking = findViewById(R.id.cbPacking);
+        cbTransport = findViewById(R.id.cbTransport);
 
         // Area dropdown
         ArrayAdapter<String> areaAdapter = new ArrayAdapter<>(
@@ -77,6 +83,7 @@ public class MoverHomeActivity extends AppCompatActivity {
             String area = areaDropdown.getText().toString();
             String bedroomsStr = bedroomsDropdown.getText().toString();
             String budgetStr = etMaxBudget.getText().toString().trim();
+            String fromAddress = etFromAddress.getText().toString().trim();
 
             if (budgetStr.isEmpty()) {
                 Toast.makeText(this, "Enter your maximum budget", Toast.LENGTH_SHORT).show();
@@ -92,15 +99,20 @@ public class MoverHomeActivity extends AppCompatActivity {
             String moveDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
                     .format(selectedDate.getTime());
 
-            // Fetch data and generate plans (runs on background thread)
+            boolean includeLabor = cbLabor.isChecked();
+            boolean includePacking = cbPacking.isChecked();
+            boolean includeTransport = cbTransport.isChecked();
+
+            // Fetch data and generate plans
             repository.fetchAllData(area, maxBudget, bedrooms, new MoveRepository.DataCallback() {
                 @Override
                 public void onDataLoaded(List<House> houses, List<LaborProvider> labors,
                                          List<PackingProvider> packings, List<TransportProvider> transports) {
                     PlanGenerator generator = new PlanGenerator();
-                    List<Plan> plans = generator.generatePlans(houses, labors, packings, transports, maxBudget);
+                    List<Plan> plans = generator.generatePlans(
+                            houses, labors, packings, transports,
+                            maxBudget, includeLabor, includePacking, includeTransport);
 
-                    // FIX: wrap plans in a new ArrayList to guarantee serializability
                     List<Plan> serializablePlans = new ArrayList<>(plans);
 
                     runOnUiThread(() -> {
@@ -115,6 +127,7 @@ public class MoverHomeActivity extends AppCompatActivity {
                         intent.putExtra("maxBudget", maxBudget);
                         intent.putExtra("bedrooms", bedrooms);
                         intent.putExtra("moveDate", moveDate);
+                        intent.putExtra("fromAddress", fromAddress);
                         startActivity(intent);
                     });
                 }

@@ -30,6 +30,15 @@
         app:cornerRadius="12dp"/>
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnMyOrders"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="8dp"
+        android:text="My Orders"
+        app:cornerRadius="12dp"/>
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnLogout"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
