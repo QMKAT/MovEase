@@ -1,6 +1,7 @@
 package com.example.movease;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,6 +53,7 @@ public class ProviderHomeActivity extends AppCompatActivity {
         rvServices.setAdapter(adapter);
 
         findViewById(R.id.btnAddService).setOnClickListener(v -> showAddEditDialog(null));
+        findViewById(R.id.btnMyOrders).setOnClickListener(v -> startActivity(new Intent(ProviderHomeActivity.this, OrdersActivity.class)));
         findViewById(R.id.btnLogout).setOnClickListener(v -> logout());
 
         loadServices();

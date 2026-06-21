@@ -54,6 +54,22 @@
                         android:inputType="none"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <!-- Moving From (current address) -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Moving From (current address)"
+                    app:boxStrokeColor="@color/primary"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_marginBottom="16dp">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etFromAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPostalAddress"
+                        android:textSize="16sp"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
                 <!-- Budget -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
@@ -68,8 +84,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="number"
-                        android:hint="e.g. 15000000 (1.5 Crore)" />
-5                        android:textSize="16sp"/>
+                        android:textSize="16sp"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Date -->
@@ -111,6 +126,38 @@
                         android:layout_height="wrap_content"
                         android:inputType="none"/>
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Service checkboxes -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Services to include"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_primary"
+                    android:layout_marginBottom="8dp"/>
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/cbLabor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Include Labor"
+                    android:checked="true"/>
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/cbPacking"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Include Packing"
+                    android:checked="true"/>
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/cbTransport"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Include Transport"
+                    android:checked="true"
+                    android:layout_marginBottom="16dp"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnFindPlan"
