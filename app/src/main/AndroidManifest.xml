@@ -41,6 +41,8 @@
         <!-- Free map view -->
         <activity android:name=".MapActivity" />
 
+        <activity android:name=".PlanDetailActivity" />
+        <activity android:name=".OrdersActivity" />
         <!-- Firebase Cloud Messaging Service -->
         <service
             android:name=".MyFirebaseMessagingService"
@@ -49,7 +51,6 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
         <!-- Optional: default notification channel (not mandatory, but keeps things tidy) -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"

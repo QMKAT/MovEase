@@ -4,19 +4,25 @@ import com.example.movease.data.model.*;
 import java.util.*;
 
 public class PlanGenerator {
+
     public List<Plan> generatePlans(List<House> houses, List<LaborProvider> labors,
                                     List<PackingProvider> packings, List<TransportProvider> transports,
-                                    double maxBudget) {
+                                    double maxBudget,
+                                    boolean includeLabor, boolean includePacking, boolean includeTransport) {
+        // Replace disabled services with a zero-cost dummy list
+        if (!includeLabor) labors = Collections.singletonList(createDummyLabor());
+        if (!includePacking) packings = Collections.singletonList(createDummyPacking());
+        if (!includeTransport) transports = Collections.singletonList(createDummyTransport());
+
         List<Plan> allPlans = new ArrayList<>();
 
-        // Generate Cartesian product
         for (House h : houses) {
             if (h.getPrice() > maxBudget) continue;
             for (LaborProvider l : labors) {
                 for (PackingProvider p : packings) {
                     for (TransportProvider t : transports) {
-                        double estLaborCost = l.getRatePerHour() * 8; // assume 8 hours
-                        double estTransportCost = t.getCostPerKm() * 10; // assume 10 km
+                        double estLaborCost = l.getRatePerHour() * 8;
+                        double estTransportCost = t.getCostPerKm() * 10;
                         double totalCost = h.getPrice() + estLaborCost + p.getCostPerBox() * 20 + estTransportCost;
                         if (totalCost > maxBudget) continue;
 
@@ -30,7 +36,6 @@ public class PlanGenerator {
             }
         }
 
-        // Sort by score descending, take top 5
         Collections.sort(allPlans, (p1, p2) -> Double.compare(p2.getScore(), p1.getScore()));
         if (allPlans.size() > 5) {
             allPlans = allPlans.subList(0, 5);
@@ -38,10 +43,42 @@ public class PlanGenerator {
         return allPlans;
     }
 
+    private LaborProvider createDummyLabor() {
+        LaborProvider dummy = new LaborProvider();
+        dummy.setId("none");
+        dummy.setName("No Labor");
+        dummy.setRatePerHour(0);
+        dummy.setRating(3.0);
+        dummy.setMaxWorkers(0);
+        dummy.setAvailabilityDate("N/A");
+        return dummy;
+    }
+
+    private PackingProvider createDummyPacking() {
+        PackingProvider dummy = new PackingProvider();
+        dummy.setId("none");
+        dummy.setName("No Packing");
+        dummy.setCostPerBox(0);
+        dummy.setRating(3.0);
+        dummy.setMaterialType("None");
+        dummy.setDeliveryAvailable(false);
+        return dummy;
+    }
+
+    private TransportProvider createDummyTransport() {
+        TransportProvider dummy = new TransportProvider();
+        dummy.setId("none");
+        dummy.setName("No Transport");
+        dummy.setCostPerKm(0);
+        dummy.setRating(3.0);
+        dummy.setVehicleType("None");
+        dummy.setAvailable(true);
+        return dummy;
+    }
+
     private double calculateScore(House h, LaborProvider l, PackingProvider p, TransportProvider t,
                                   double totalCost, double maxBudget) {
-        // Weighted score: 60% cost, 40% average rating
-        double costScore = 1 - (totalCost / maxBudget); // higher for cheaper
+        double costScore = 1 - (totalCost / maxBudget);
         double ratingScore = (h.getRating() + l.getRating() + p.getRating() + t.getRating()) / 4.0 / 5.0;
         return costScore * 0.6 + ratingScore * 0.4;
     }

@@ -10,15 +10,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.movease.MapActivity;
+import com.example.movease.PlanDetailActivity;
 import com.example.movease.R;
 import com.example.movease.engine.Plan;
 import java.util.List;
 
 public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
     private List<Plan> plans;
+    private String fromAddress;   // new
 
-    public PlanAdapter(List<Plan> plans) {
+    public PlanAdapter(List<Plan> plans, String fromAddress) {
         this.plans = plans;
+        this.fromAddress = fromAddress;
     }
 
     @NonNull
@@ -31,6 +34,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Plan plan = plans.get(position);
+
         holder.tvHouse.setText("House: " + plan.getHouse().getAddress() + " (Price: PKR " + String.format("%.0f", plan.getHouse().getPrice()) + ")");
         holder.tvLabor.setText("Labor: " + plan.getLabor().getName() + " (Rate/hr: " + plan.getLabor().getRatePerHour() + ")");
         holder.tvPacking.setText("Packing: " + plan.getPacking().getName() + " (Cost/box: " + plan.getPacking().getCostPerBox() + ")");
@@ -38,11 +42,10 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
         holder.tvTotalCost.setText("Total Estimated Cost: PKR " + String.format("%.0f", plan.getTotalCost()));
         holder.tvScore.setText("Score: " + String.format("%.2f", plan.getScore()));
 
-        // Add advantage/disadvantage text
         holder.llAdvantages.removeAllViews();
         for (String adv : plan.getAdvantages()) {
             TextView tv = new TextView(holder.itemView.getContext());
-            tv.setText(adv);
+            tv.setText("✓ " + adv);
             tv.setTextSize(12);
             tv.setTextColor(0xFF4CAF50);
             holder.llAdvantages.addView(tv);
@@ -51,13 +54,12 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
         holder.llDisadvantages.removeAllViews();
         for (String dis : plan.getDisadvantages()) {
             TextView tv = new TextView(holder.itemView.getContext());
-            tv.setText(dis);
+            tv.setText("✗ " + dis);
             tv.setTextSize(12);
             tv.setTextColor(0xFFF44336);
             holder.llDisadvantages.addView(tv);
         }
 
-        // Toggle visibility
         holder.btnToggleDetails.setOnClickListener(v -> {
             if (holder.llAdvantages.getVisibility() == View.GONE) {
                 holder.llAdvantages.setVisibility(View.VISIBLE);
@@ -70,17 +72,19 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
             }
         });
 
-        // Map button – opens MapActivity (free, no API key)
         holder.btnMap.setOnClickListener(v -> {
-            Plan currentPlan = plans.get(holder.getAdapterPosition());
-            double lat = currentPlan.getHouse().getLat();
-            double lng = currentPlan.getHouse().getLng();
-            String address = currentPlan.getHouse().getAddress();
-
             Intent intent = new Intent(v.getContext(), MapActivity.class);
-            intent.putExtra("lat", lat);
-            intent.putExtra("lng", lng);
-            intent.putExtra("address", address);
+            intent.putExtra("lat", plan.getHouse().getLat());
+            intent.putExtra("lng", plan.getHouse().getLng());
+            intent.putExtra("address", plan.getHouse().getAddress());
+            v.getContext().startActivity(intent);
+        });
+
+        // Whole card click → Plan Detail Screen
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), PlanDetailActivity.class);
+            intent.putExtra("plan", plan);
+            intent.putExtra("fromAddress", fromAddress);
             v.getContext().startActivity(intent);
         });
     }
@@ -91,10 +95,9 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        Button btnMap;
         TextView tvHouse, tvLabor, tvPacking, tvTransport, tvTotalCost, tvScore;
         LinearLayout llAdvantages, llDisadvantages;
-        Button btnToggleDetails;
+        Button btnToggleDetails, btnMap;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
