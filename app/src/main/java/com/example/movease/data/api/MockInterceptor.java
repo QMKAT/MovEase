@@ -25,11 +25,11 @@ public class MockInterceptor implements Interceptor {
             json = "[{\"id\":\"h1\",\"address\":\"12-A, DHA Phase 5, Lahore\",\"area\":\"DHA\",\"price\":45000000,\"bedrooms\":3,\"rating\":4.2,\"lat\":31.46271,\"lng\":74.40168,\"disadvantages\":[]}," +
                     "{\"id\":\"h2\",\"address\":\"34-B, Gulberg III, Lahore\",\"area\":\"Gulberg\",\"price\":60000000,\"bedrooms\":4,\"rating\":4.5,\"lat\":31.5075,\"lng\":74.3389,\"disadvantages\":[]}]";
         } else if (path.contains("labor")) {
-            json = "[{\"id\":\"l1\",\"name\":\"Ahmad Movers\",\"ratePerHour\":300,\"rating\":4.0,\"maxWorkers\":5,\"availabilityDate\":\"2026-06-21\"}]";
+            json = "[]";   // only provider services
         } else if (path.contains("packing")) {
-            json = "[{\"id\":\"p1\",\"name\":\"SafePack\",\"materialType\":\"Cardboard\",\"costPerBox\":150,\"rating\":4.3,\"deliveryAvailable\":true}]";
+            json = "[]";   // only provider services
         } else if (path.contains("transport")) {
-            json = "[{\"id\":\"t1\",\"name\":\"Porter Express\",\"vehicleType\":\"Truck\",\"costPerKm\":50,\"rating\":4.6,\"available\":true}]";
+            json = "[]";   // only provider services
         }
 
         if (json != null) {
@@ -42,7 +42,6 @@ public class MockInterceptor implements Interceptor {
                     .build();
         }
 
-        // No mock data for this request – proceed to the real server (or fail)
         return chain.proceed(request);
     }
 }

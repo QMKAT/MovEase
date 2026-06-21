@@ -1,6 +1,5 @@
 package com.example.movease.data.repository;
 
-import android.content.Context;
 import com.example.movease.data.api.MoveApiService;
 import com.example.movease.data.api.RetrofitClient;
 import com.example.movease.data.model.*;
@@ -30,17 +29,17 @@ public class MoveRepository {
     public void fetchAllData(String area, double maxBudget, int bedrooms, DataCallback callback) {
         new Thread(() -> {
             try {
-                // 1. Houses from mock (effectively final)
+                // 1. Fetch houses from mock (never reassign 'houses')
                 final List<House> houses = new ArrayList<>();
                 List<House> mockHouses = apiService.getHouses(area, maxBudget, bedrooms).execute().body();
                 if (mockHouses != null) houses.addAll(mockHouses);
 
-                // 2. Prepare effectively final lists for services
+                // 2. Prepare final lists for services
                 final List<LaborProvider> labors = new ArrayList<>();
                 final List<PackingProvider> packings = new ArrayList<>();
                 final List<TransportProvider> transports = new ArrayList<>();
 
-                // Add mock data to these lists
+                // Add mock data (now empty arrays, so nothing added)
                 List<LaborProvider> mockLabors = apiService.getLabor("Lahore").execute().body();
                 if (mockLabors != null) labors.addAll(mockLabors);
 
@@ -50,12 +49,14 @@ public class MoveRepository {
                 List<TransportProvider> mockTransports = apiService.getTransport("Lahore").execute().body();
                 if (mockTransports != null) transports.addAll(mockTransports);
 
-                // 3. Fetch all provider services from Firestore and merge
+                // 3. Fetch provider services from Firestore and merge
                 db.collection("services").get()
                         .addOnSuccessListener(queryDocumentSnapshots -> {
                             for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                                 Service service = doc.toObject(Service.class);
                                 if (service == null) continue;
+                                // Set the Firestore document ID
+                                service.setId(doc.getId());
 
                                 switch (service.getType()) {
                                     case "labor":
@@ -90,7 +91,7 @@ public class MoveRepository {
                                         break;
                                 }
                             }
-                            // Deliver the combined lists
+                            // All lists are effectively final – safe to use in callback
                             callback.onDataLoaded(houses, labors, packings, transports);
                         })
                         .addOnFailureListener(e -> callback.onError(e.getMessage()));

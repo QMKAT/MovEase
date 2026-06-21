@@ -1,6 +1,7 @@
 package com.example.movease;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,6 +25,7 @@ public class OrdersActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
     private Set<String> myServiceIds = new HashSet<>();
+    private static final String TAG = "OrdersActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,17 +52,25 @@ public class OrdersActivity extends AppCompatActivity {
         String providerId = mAuth.getCurrentUser().getUid();
         ServiceRepository serviceRepo = new ServiceRepository(providerId);
 
-        // 1. Fetch provider's own services
         serviceRepo.getMyServices(
                 services -> {
                     myServiceIds.clear();
                     for (Service s : services) {
                         myServiceIds.add(s.getId());
+                        Log.d(TAG, "Provider service ID: " + s.getId());
                     }
-                    // 2. Now fetch bookings and filter
+                    Log.d(TAG, "Total provider services: " + myServiceIds.size());
+                    if (myServiceIds.isEmpty()) {
+                        Toast.makeText(OrdersActivity.this,
+                                "You have no services yet. Add a service first.", Toast.LENGTH_SHORT).show();
+                    }
                     loadFilteredBookings();
                 },
-                e -> Toast.makeText(this, "Failed to load services: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                e -> {
+                    Log.e(TAG, "Failed to load services", e);
+                    Toast.makeText(OrdersActivity.this,
+                            "Failed to load your services: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
         );
     }
 
@@ -74,17 +84,22 @@ public class OrdersActivity extends AppCompatActivity {
                         String packingId = (String) booking.get("packingId");
                         String transportId = (String) booking.get("transportId");
 
-                        // Check if any of these IDs belongs to the current provider
+                        Log.d(TAG, "Booking laborId=" + laborId + " packingId=" + packingId + " transportId=" + transportId);
+
                         if (myServiceIds.contains(laborId) || myServiceIds.contains(packingId) || myServiceIds.contains(transportId)) {
                             orderList.add(booking);
                         }
                     }
                     adapter.notifyDataSetChanged();
                     if (orderList.isEmpty()) {
-                        Toast.makeText(this, "No orders for your services yet", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(OrdersActivity.this,
+                                "No orders for your services yet", Toast.LENGTH_SHORT).show();
                     }
                 })
-                .addOnFailureListener(e ->
-                        Toast.makeText(this, "Failed to load orders: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Failed to load bookings", e);
+                    Toast.makeText(OrdersActivity.this,
+                            "Failed to load orders: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
     }
 }
