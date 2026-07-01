@@ -100,4 +100,74 @@ public class MoveRepository {
             }
         }).start();
     }
+
+    public void fetchServicesOnly(DataCallback callback) {
+        new Thread(() -> {
+            try {
+                // No houses – empty list
+                final List<House> houses = new ArrayList<>();
+
+                final List<LaborProvider> labors = new ArrayList<>();
+                final List<PackingProvider> packings = new ArrayList<>();
+                final List<TransportProvider> transports = new ArrayList<>();
+
+                // Add mock data (empty arrays, so nothing added)
+                List<LaborProvider> mockLabors = apiService.getLabor("Lahore").execute().body();
+                if (mockLabors != null) labors.addAll(mockLabors);
+
+                List<PackingProvider> mockPackings = apiService.getPacking("Lahore").execute().body();
+                if (mockPackings != null) packings.addAll(mockPackings);
+
+                List<TransportProvider> mockTransports = apiService.getTransport("Lahore").execute().body();
+                if (mockTransports != null) transports.addAll(mockTransports);
+
+                // Fetch provider services from Firestore and merge
+                db.collection("services").get()
+                        .addOnSuccessListener(queryDocumentSnapshots -> {
+                            for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                                Service service = doc.toObject(Service.class);
+                                if (service == null) continue;
+                                service.setId(doc.getId());
+
+                                switch (service.getType()) {
+                                    case "labor":
+                                        LaborProvider lp = new LaborProvider();
+                                        lp.setId(service.getId());
+                                        lp.setName(service.getName());
+                                        lp.setRatePerHour(service.getRate());
+                                        lp.setRating(service.getRating());
+                                        lp.setMaxWorkers(5);
+                                        lp.setAvailabilityDate("2026-06-21");
+                                        labors.add(lp);
+                                        break;
+                                    case "packing":
+                                        PackingProvider pp = new PackingProvider();
+                                        pp.setId(service.getId());
+                                        pp.setName(service.getName());
+                                        pp.setCostPerBox(service.getRate());
+                                        pp.setRating(service.getRating());
+                                        pp.setMaterialType("General");
+                                        pp.setDeliveryAvailable(true);
+                                        packings.add(pp);
+                                        break;
+                                    case "transport":
+                                        TransportProvider tp = new TransportProvider();
+                                        tp.setId(service.getId());
+                                        tp.setName(service.getName());
+                                        tp.setCostPerKm(service.getRate());
+                                        tp.setRating(service.getRating());
+                                        tp.setVehicleType("Truck");
+                                        tp.setAvailable(true);
+                                        transports.add(tp);
+                                        break;
+                                }
+                            }
+                            callback.onDataLoaded(houses, labors, packings, transports);
+                        })
+                        .addOnFailureListener(e -> callback.onError(e.getMessage()));
+            } catch (Exception e) {
+                callback.onError(e.getMessage());
+            }
+        }).start();
+    }
 }

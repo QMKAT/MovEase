@@ -20,7 +20,7 @@ public class PlanDetailActivity extends AppCompatActivity {
     private LinearLayout llAdvantages, llDisadvantages;
     private Button btnMap, btnBook;
     private Plan plan;
-    private String fromAddress;
+    private String fromAddress, toAddress;
 
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
@@ -52,6 +52,7 @@ public class PlanDetailActivity extends AppCompatActivity {
         llDisadvantages = findViewById(R.id.llDetailDisadvantages);
         btnMap = findViewById(R.id.btnDetailMap);
         btnBook = findViewById(R.id.btnBookPlan);
+        toAddress = getIntent().getStringExtra("toAddress");
 
         tvHouse.setText("House: " + plan.getHouse().getAddress() + "\nPrice: PKR " + String.format("%.0f", plan.getHouse().getPrice()));
         tvLabor.setText("Labor: " + plan.getLabor().getName() + " — Rate: PKR " + plan.getLabor().getRatePerHour() + "/hr");
@@ -59,6 +60,10 @@ public class PlanDetailActivity extends AppCompatActivity {
         tvTransport.setText("Transport: " + plan.getTransport().getName() + " — Cost: PKR " + plan.getTransport().getCostPerKm() + "/km");
         tvTotalCost.setText("Total Estimated Cost: PKR " + String.format("%.0f", plan.getTotalCost()));
         tvDetailScore.setText("Plan Score: " + String.format("%.1f", plan.getScore() * 5) + " / 5");
+
+        if (toAddress == null || toAddress.isEmpty()) {
+            toAddress = plan.getHouse().getAddress();   // fallback if not provided
+        }
 
         // Advantages
         llAdvantages.removeAllViews();
@@ -108,6 +113,7 @@ public class PlanDetailActivity extends AppCompatActivity {
         booking.put("transportId", plan.getTransport().getId());
         booking.put("totalCost", plan.getTotalCost());
         booking.put("timestamp", System.currentTimeMillis());
+        booking.put("toAddress", toAddress);
 
         db.collection("bookings")
                 .add(booking)

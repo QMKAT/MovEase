@@ -20,9 +20,12 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
     private List<Plan> plans;
     private String fromAddress;
 
-    public PlanAdapter(List<Plan> plans, String fromAddress) {
+    private String toAddress;   // new
+
+    public PlanAdapter(List<Plan> plans, String fromAddress, String toAddress) {
         this.plans = plans;
         this.fromAddress = fromAddress;
+        this.toAddress = toAddress;
     }
 
     @NonNull
@@ -84,16 +87,15 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
             intent.putExtra("address", plan.getHouse().getAddress());
             v.getContext().startActivity(intent);
         });
-
-        // Whole card click → Plan Detail Screen
-        holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(v.getContext(), PlanDetailActivity.class);
-            intent.putExtra("plan", plan);
-            intent.putExtra("fromAddress", fromAddress);
-            v.getContext().startActivity(intent);
-        });
-    }
-
+        // In onBindViewHolder, whole card click:
+    holder.itemView.setOnClickListener(v -> {
+                Intent intent = new Intent(v.getContext(), PlanDetailActivity.class);
+                intent.putExtra("plan", plan);
+                intent.putExtra("fromAddress", fromAddress);
+                intent.putExtra("toAddress", toAddress != null ? toAddress : plan.getHouse().getAddress());
+                v.getContext().startActivity(intent);
+            });
+        }
     @Override
     public int getItemCount() {
         return plans.size();
