@@ -217,11 +217,17 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnLogout"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
+            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Logout"
             android:layout_gravity="center"
-            android:textColor="@color/accent"/>
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            app:icon="@drawable/ic_close"
+            app:iconGravity="textStart"
+            app:iconSize="18dp"
+            app:backgroundTint="@color/logout_red"
+            android:textColor="@android:color/white"/>
     </LinearLayout>
 </ScrollView>

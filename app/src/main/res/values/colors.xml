@@ -23,4 +23,6 @@
     <!-- Status bar & solid white -->
     <color name="status_bar">#4F5B66</color>
     <color name="white">#FFFFFF</color>
+
+    <color name="logout_red">#D32F2F</color>   <!-- strong red, visible for colour‑blind users -->
 </resources>

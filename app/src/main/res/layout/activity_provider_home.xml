@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:fitsSystemWindows="true">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
@@ -50,16 +51,21 @@
                 android:text="My Orders"
                 app:cornerRadius="12dp"/>
 
+            <!-- Filled red logout button with X icon -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnLogout"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
+                style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Logout"
                 android:layout_gravity="center"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginBottom="32dp"
-                android:textColor="@color/accent"/>
+                app:icon="@drawable/ic_close"
+                app:iconGravity="textStart"
+                app:iconSize="18dp"
+                app:backgroundTint="@color/logout_red"
+                android:textColor="@android:color/white"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
