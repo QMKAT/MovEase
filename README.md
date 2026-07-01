@@ -113,7 +113,7 @@ com.example.movease
 
 | Splash | Login | Plan Input | Plan List | Map |
 |--------|-------|------------|-----------|-----|
-| ![Splash](screenshots/splash.png) | ![Login](screenshots/login.png) | ![Input](screenshots/input.png) | ![Plans](screenshots/plans.png) | ![Map](screenshots/map.png) |
+| ![Splash](screenshots/1splash.jpeg) | ![Login](screenshots/login.png) | ![Input](screenshots/input.png) | ![Plans](screenshots/plans.png) | ![Map](screenshots/map.png) |
 
 | Plan Detail | Mover Bookings | Rate Services | Provider Orders |
 |-------------|----------------|---------------|-----------------|
