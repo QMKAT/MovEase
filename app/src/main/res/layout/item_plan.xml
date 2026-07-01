@@ -36,10 +36,11 @@
                 android:textColor="@color/text_primary"/>
         </LinearLayout>
 
+        <!-- Divider -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/surface"
+            android:background="@color/divider"
             android:layout_marginVertical="8dp"/>
 
         <!-- Labor -->
@@ -99,10 +100,11 @@
                 android:textSize="14sp"/>
         </LinearLayout>
 
+        <!-- Divider -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/surface"
+            android:background="@color/divider"
             android:layout_marginVertical="8dp"/>
 
         <!-- Total cost & Score -->

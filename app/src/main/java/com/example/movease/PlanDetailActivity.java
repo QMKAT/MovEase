@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import com.example.movease.engine.Plan;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -15,7 +16,7 @@ import java.util.Map;
 
 public class PlanDetailActivity extends AppCompatActivity {
 
-    private TextView tvHouse, tvLabor, tvPacking, tvTransport, tvTotalCost;
+    private TextView tvHouse, tvLabor, tvPacking, tvTransport, tvTotalCost, tvDetailScore;
     private LinearLayout llAdvantages, llDisadvantages;
     private Button btnMap, btnBook;
     private Plan plan;
@@ -46,6 +47,7 @@ public class PlanDetailActivity extends AppCompatActivity {
         tvPacking = findViewById(R.id.tvDetailPacking);
         tvTransport = findViewById(R.id.tvDetailTransport);
         tvTotalCost = findViewById(R.id.tvDetailTotalCost);
+        tvDetailScore = findViewById(R.id.tvDetailScore);
         llAdvantages = findViewById(R.id.llDetailAdvantages);
         llDisadvantages = findViewById(R.id.llDetailDisadvantages);
         btnMap = findViewById(R.id.btnDetailMap);
@@ -56,22 +58,25 @@ public class PlanDetailActivity extends AppCompatActivity {
         tvPacking.setText("Packing: " + plan.getPacking().getName() + " — Cost: PKR " + plan.getPacking().getCostPerBox() + "/box");
         tvTransport.setText("Transport: " + plan.getTransport().getName() + " — Cost: PKR " + plan.getTransport().getCostPerKm() + "/km");
         tvTotalCost.setText("Total Estimated Cost: PKR " + String.format("%.0f", plan.getTotalCost()));
+        tvDetailScore.setText("Plan Score: " + String.format("%.1f", plan.getScore() * 5) + " / 5");
 
+        // Advantages
         llAdvantages.removeAllViews();
         for (String adv : plan.getAdvantages()) {
             TextView tv = new TextView(this);
             tv.setText("✓ " + adv);
             tv.setTextSize(14);
-            tv.setTextColor(0xFF4CAF50);
+            tv.setTextColor(ContextCompat.getColor(this, R.color.advantage));
             llAdvantages.addView(tv);
         }
 
+        // Disadvantages
         llDisadvantages.removeAllViews();
         for (String dis : plan.getDisadvantages()) {
             TextView tv = new TextView(this);
             tv.setText("✗ " + dis);
             tv.setTextSize(14);
-            tv.setTextColor(0xFFF44336);
+            tv.setTextColor(ContextCompat.getColor(this, R.color.disadvantage));
             llDisadvantages.addView(tv);
         }
 

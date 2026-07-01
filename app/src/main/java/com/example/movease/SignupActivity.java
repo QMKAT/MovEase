@@ -58,10 +58,6 @@ public class SignupActivity extends AppCompatActivity {
                     Toast.makeText(SignupActivity.this, "Passwords don't match", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (radioGroupRole.getCheckedRadioButtonId() == -1) {
-                    Toast.makeText(SignupActivity.this, "Please select a role", Toast.LENGTH_SHORT).show();
-                    return;
-                }
 
                 // Determine selected role
                 String role = (radioGroupRole.getCheckedRadioButtonId() == R.id.radioMover) ? "mover" : "provider";

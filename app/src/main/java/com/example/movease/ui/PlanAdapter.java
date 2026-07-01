@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.movease.MapActivity;
 import com.example.movease.PlanDetailActivity;
@@ -17,7 +18,7 @@ import java.util.List;
 
 public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
     private List<Plan> plans;
-    private String fromAddress;   // new
+    private String fromAddress;
 
     public PlanAdapter(List<Plan> plans, String fromAddress) {
         this.plans = plans;
@@ -40,26 +41,29 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
         holder.tvPacking.setText("Packing: " + plan.getPacking().getName() + " (Cost/box: " + plan.getPacking().getCostPerBox() + ")");
         holder.tvTransport.setText("Transport: " + plan.getTransport().getName() + " (Cost/km: " + plan.getTransport().getCostPerKm() + ")");
         holder.tvTotalCost.setText("Total Estimated Cost: PKR " + String.format("%.0f", plan.getTotalCost()));
-        holder.tvScore.setText("Score: " + String.format("%.2f", plan.getScore()));
+        holder.tvScore.setText("Score: " + String.format("%.1f", plan.getScore() * 5) + " / 5");
 
+        // Advantages
         holder.llAdvantages.removeAllViews();
         for (String adv : plan.getAdvantages()) {
             TextView tv = new TextView(holder.itemView.getContext());
             tv.setText("✓ " + adv);
             tv.setTextSize(12);
-            tv.setTextColor(0xFF4CAF50);
+            tv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.advantage));
             holder.llAdvantages.addView(tv);
         }
 
+        // Disadvantages
         holder.llDisadvantages.removeAllViews();
         for (String dis : plan.getDisadvantages()) {
             TextView tv = new TextView(holder.itemView.getContext());
             tv.setText("✗ " + dis);
             tv.setTextSize(12);
-            tv.setTextColor(0xFFF44336);
+            tv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.disadvantage));
             holder.llDisadvantages.addView(tv);
         }
 
+        // Toggle details visibility
         holder.btnToggleDetails.setOnClickListener(v -> {
             if (holder.llAdvantages.getVisibility() == View.GONE) {
                 holder.llAdvantages.setVisibility(View.VISIBLE);
@@ -72,6 +76,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
             }
         });
 
+        // Map button
         holder.btnMap.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), MapActivity.class);
             intent.putExtra("lat", plan.getHouse().getLat());

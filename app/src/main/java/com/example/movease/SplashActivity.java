@@ -25,17 +25,17 @@ public class SplashActivity extends AppCompatActivity {
         observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                // Remove listener to avoid multiple calls
                 houseRight.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
-                // Get the X coordinates of the right edge of the left house and left edge of the right house
+                // Get the positions
                 float leftHouseRightEdge = houseLeft.getX() + houseLeft.getWidth();
-                float rightHouseLeftEdge = houseRight.getX();
+                float truckStartX = truck.getX();
+                float truckWidth = truck.getWidth();
 
-                // Distance the truck must travel = from its current X to align with right house
-                float distance = rightHouseLeftEdge - truck.getX() - truck.getWidth() + 30; // small gap adjustment
+                // Distance to move LEFT: from truck's current X to align with left house's right edge
+                float distance = leftHouseRightEdge - truckStartX - truckWidth + 30; // 30dp gap adjustment
 
-                // Animate truck translation
+                // Animate truck translationX negative (moving left)
                 ObjectAnimator animator = ObjectAnimator.ofFloat(truck, "translationX", 0f, distance);
                 animator.setDuration(2000);
                 animator.setInterpolator(new LinearInterpolator());

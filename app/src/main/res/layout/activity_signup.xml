@@ -97,7 +97,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Mover"
-            android:textSize="14sp"/>
+            android:textSize="14sp"
+            android:checked="true" />   <!-- ✅ Default selection -->
 
         <com.google.android.material.radiobutton.MaterialRadioButton
             android:id="@+id/radioProvider"
@@ -105,7 +106,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Service Provider"
-            android:textSize="14sp"/>
+            android:textSize="14sp" />
     </RadioGroup>
 
     <com.google.android.material.button.MaterialButton
