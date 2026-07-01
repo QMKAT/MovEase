@@ -123,14 +123,15 @@ com.example.movease
 
 ## 📄 Project Report & Demo
 
-- Full project report: `docs/Project_Report.pdf`
-- Demo video: [Watch on YouTube](#) *(add your link)*
+- Full project report: [Project_Report.pdf](docs/Project_Report.pdf) (add your own)
+- Demo video: [Watch on YouTube](#) (add link)
 
 ---
 
 ## 👥 Contributors
 
-- Your Name – [GitHub Profile](https://github.com/your-username)
+- Muhammad Abdullah Tariq – [GitHub Profile](https://github.com/QMAT)
+- Hannan Shoaib – [GitHub Profile](https://github.com/Hannan-95)
 
 ---
 
