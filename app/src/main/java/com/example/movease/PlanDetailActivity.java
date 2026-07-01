@@ -106,14 +106,14 @@ public class PlanDetailActivity extends AppCompatActivity {
         Map<String, Object> booking = new HashMap<>();
         booking.put("userId", userId);
         booking.put("fromAddress", fromAddress);
-        booking.put("toAddress", plan.getHouse().getAddress());
+        booking.put("toAddress", toAddress);
         booking.put("houseId", plan.getHouse().getId());
         booking.put("laborId", plan.getLabor().getId());
         booking.put("packingId", plan.getPacking().getId());
         booking.put("transportId", plan.getTransport().getId());
         booking.put("totalCost", plan.getTotalCost());
         booking.put("timestamp", System.currentTimeMillis());
-        booking.put("toAddress", toAddress);
+        booking.put("status", "pending");
 
         db.collection("bookings")
                 .add(booking)

@@ -128,7 +128,6 @@ public class MoverHomeActivity extends AppCompatActivity {
                     Toast.makeText(this, "Please select area and bedrooms", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
                 int bedrooms = Integer.parseInt(bedroomsStr);
                 double maxBudget = Double.parseDouble(budgetStr);
                 String moveDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
@@ -156,6 +155,9 @@ public class MoverHomeActivity extends AppCompatActivity {
                 });
             }
         });
+
+        findViewById(R.id.btnMyBookings).setOnClickListener(v ->
+                startActivity(new Intent(MoverHomeActivity.this, MoverBookingsActivity.class)));
 
         btnLogout.setOnClickListener(v -> {
             mAuth.signOut();
