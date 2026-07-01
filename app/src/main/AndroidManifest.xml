@@ -34,6 +34,7 @@
         <!-- Role‑based home screens -->
         <activity android:name=".MoverHomeActivity" />
         <activity android:name=".ProviderHomeActivity" />
+        <activity android:name=".MoverBookingsActivity" />
 
         <!-- Plan list & details -->
         <activity android:name=".PlanListActivity" />

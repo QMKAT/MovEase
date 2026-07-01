@@ -2,6 +2,8 @@ package com.example.movease;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,6 +14,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +40,7 @@ public class OrdersActivity extends AppCompatActivity {
 
         rvOrders = findViewById(R.id.rvOrders);
         rvOrders.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new OrdersAdapter(orderList);
+        adapter = new OrdersAdapter(orderList, myServiceIds);
         rvOrders.setAdapter(adapter);
 
         loadMyServicesAndThenOrders();
@@ -59,16 +62,15 @@ public class OrdersActivity extends AppCompatActivity {
                         myServiceIds.add(s.getId());
                         Log.d(TAG, "Provider service ID: " + s.getId());
                     }
-                    Log.d(TAG, "Total provider services: " + myServiceIds.size());
                     if (myServiceIds.isEmpty()) {
-                        Toast.makeText(OrdersActivity.this,
+                        Toast.makeText(this,
                                 "You have no services yet. Add a service first.", Toast.LENGTH_SHORT).show();
                     }
                     loadFilteredBookings();
                 },
                 e -> {
                     Log.e(TAG, "Failed to load services", e);
-                    Toast.makeText(OrdersActivity.this,
+                    Toast.makeText(this,
                             "Failed to load your services: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
         );
@@ -84,22 +86,38 @@ public class OrdersActivity extends AppCompatActivity {
                         String packingId = (String) booking.get("packingId");
                         String transportId = (String) booking.get("transportId");
 
-                        Log.d(TAG, "Booking laborId=" + laborId + " packingId=" + packingId + " transportId=" + transportId);
-
                         if (myServiceIds.contains(laborId) || myServiceIds.contains(packingId) || myServiceIds.contains(transportId)) {
+                            booking.put("docId", doc.getId());   // store the document ID for later updates
                             orderList.add(booking);
                         }
                     }
                     adapter.notifyDataSetChanged();
                     if (orderList.isEmpty()) {
-                        Toast.makeText(OrdersActivity.this,
-                                "No orders for your services yet", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "No orders for your services yet", Toast.LENGTH_SHORT).show();
                     }
                 })
-                .addOnFailureListener(e -> {
-                    Log.e(TAG, "Failed to load bookings", e);
-                    Toast.makeText(OrdersActivity.this,
-                            "Failed to load orders: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                });
+                .addOnFailureListener(e ->
+                        Toast.makeText(this, "Failed to load orders: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+    }
+
+    // These methods are called by the adapter buttons
+    public void acceptBooking(String docId) {
+        db.collection("bookings").document(docId)
+                .update("status", "accepted")
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(this, "Order accepted", Toast.LENGTH_SHORT).show();
+                    loadFilteredBookings(); // refresh
+                })
+                .addOnFailureListener(e -> Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+    }
+
+    public void completeBooking(String docId) {
+        db.collection("bookings").document(docId)
+                .update("status", "completed")
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(this, "Order marked as completed", Toast.LENGTH_SHORT).show();
+                    loadFilteredBookings();
+                })
+                .addOnFailureListener(e -> Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 }

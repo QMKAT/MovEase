@@ -27,7 +27,8 @@ public class PlanListActivity extends AppCompatActivity {
     private double maxBudget;
     private int bedrooms;
     private String moveDate;
-    private String fromAddress;   // new
+    private String fromAddress;
+    private String toAddress;
 
     private MoveRepository repository;
     private Handler autoRefreshHandler;
@@ -50,10 +51,11 @@ public class PlanListActivity extends AppCompatActivity {
         maxBudget = getIntent().getDoubleExtra("maxBudget", 0);
         bedrooms = getIntent().getIntExtra("bedrooms", 1);
         moveDate = getIntent().getStringExtra("moveDate");
-        fromAddress = getIntent().getStringExtra("fromAddress");   // new
+        fromAddress = getIntent().getStringExtra("fromAddress");
+        toAddress = getIntent().getStringExtra("toAddress");
 
         if (plans != null) {
-            adapter = new PlanAdapter(plans, fromAddress);
+            adapter = new PlanAdapter(plans, fromAddress, toAddress);
             rvPlans.setAdapter(adapter);
         }
 
@@ -71,16 +73,18 @@ public class PlanListActivity extends AppCompatActivity {
 
     private void fetchAndGeneratePlans() {
         swipeRefresh.setRefreshing(true);
-        // Note: for real refresh, we would need the include flags again.
-        // Since the mock data doesn't change, we can reuse the existing flags by storing them,
-        // but for simplicity we re‑generate with all services included.
-        // For a full implementation, you'd store includeLabor/includePacking/includeTransport as well.
+        // For simplicity, we re‑generate with all services included (refresh only if has house? We'll handle generically)
+        // If area is empty (own house mode), we cannot refresh – fallback
+        if (area == null || area.isEmpty()) {
+            Toast.makeText(this, "Refresh not available in own‑house mode", Toast.LENGTH_SHORT).show();
+            swipeRefresh.setRefreshing(false);
+            return;
+        }
         repository.fetchAllData(area, maxBudget, bedrooms, new MoveRepository.DataCallback() {
             @Override
             public void onDataLoaded(List<House> houses, List<LaborProvider> labors,
                                      List<PackingProvider> packings, List<TransportProvider> transports) {
                 PlanGenerator generator = new PlanGenerator();
-                // Default to include all for refresh (you can store flags in intent if needed)
                 List<Plan> newPlans = generator.generatePlans(houses, labors, packings, transports, maxBudget, true, true, true);
                 plans.clear();
                 plans.addAll(newPlans);
