@@ -2,12 +2,16 @@ package com.example.movease;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+
+import com.bumptech.glide.Glide;
 import com.example.movease.engine.Plan;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -21,6 +25,7 @@ public class PlanDetailActivity extends AppCompatActivity {
     private Button btnMap, btnBook;
     private Plan plan;
     private String fromAddress, toAddress;
+    private ImageView ivHousePhoto;
 
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
@@ -53,6 +58,7 @@ public class PlanDetailActivity extends AppCompatActivity {
         btnMap = findViewById(R.id.btnDetailMap);
         btnBook = findViewById(R.id.btnBookPlan);
         toAddress = getIntent().getStringExtra("toAddress");
+        ivHousePhoto = findViewById(R.id.ivHousePhoto);
 
         tvHouse.setText("House: " + plan.getHouse().getAddress() + "\nPrice: PKR " + String.format("%.0f", plan.getHouse().getPrice()));
         tvLabor.setText("Labor: " + plan.getLabor().getName() + " — Rate: PKR " + plan.getLabor().getRatePerHour() + "/hr");
@@ -63,6 +69,17 @@ public class PlanDetailActivity extends AppCompatActivity {
 
         if (toAddress == null || toAddress.isEmpty()) {
             toAddress = plan.getHouse().getAddress();   // fallback if not provided
+        }
+
+        String imageUrl = plan.getHouse().getImageUrl();
+
+        if (imageUrl != null && !imageUrl.isEmpty()) {
+            Glide.with(this)
+                    .load(imageUrl)
+                    .placeholder(android.R.drawable.ic_menu_report_image) // optional placeholder
+                    .into(ivHousePhoto);
+        } else {
+            ivHousePhoto.setVisibility(View.GONE);
         }
 
         // Advantages

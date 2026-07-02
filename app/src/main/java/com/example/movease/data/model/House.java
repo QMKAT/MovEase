@@ -7,14 +7,15 @@ public class House implements Serializable {
     private String id;
     private String address;
     private String area;
-    private double price;          // sale price in PKR (changed from rent)
+    private double price;
     private int bedrooms;
-    private double rating;         // default if not available
-    private double lat;            // default 0
-    private double lng;            // default 0
+    private double rating;
+    private double lat;
+    private double lng;
     private List<String> disadvantages;
+    private String imageUrl;   // <-- new field
 
-    // getters and setters (keep existing, just rename getRent/setRent to getPrice/setPrice)
+    // Getters and setters
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
     public String getAddress() { return address; }
@@ -33,4 +34,6 @@ public class House implements Serializable {
     public void setLng(double lng) { this.lng = lng; }
     public List<String> getDisadvantages() { return disadvantages; }
     public void setDisadvantages(List<String> disadvantages) { this.disadvantages = disadvantages; }
+    public String getImageUrl() { return imageUrl; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 }
